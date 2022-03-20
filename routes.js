@@ -4,7 +4,14 @@ const bcrypt = require('bcrypt');
 module.exports = function (app, myDataBase) {
 
     app.route('/').get((req, res) => {
-        res.render(__dirname + '/views/pug/index', { title: 'Connected to Database', message: 'Please login', showLogin: true, showRegistration: true, message: req.flash('message') });
+        res.render(__dirname + '/views/pug/index', {
+            title: 'Connected to Database',
+            message: 'Please login',
+            showLogin: true,
+            showRegistration: true,
+            message: req.flash('message'),
+            showSocialAuth: true
+        });
     });
 
     // login API
@@ -57,6 +64,15 @@ module.exports = function (app, myDataBase) {
                 res.redirect('/profile');
             }
         );
+
+    // Github login API
+    app.route('/auth/github').get(passport.authenticate('github'));
+
+    // Github Redirect Back
+    app.route('/auth/github/callback')
+        .get(passport.authenticate('local', { failureRedirect: '/loginNoNoNo' }), (req, res) => {
+            res.redirect('/profile');
+        });
 
     //error handling
     app.use((req, res, next) => {
