@@ -21,7 +21,7 @@ module.exports = function (app, myDataBase) {
 
     // Profile page
     app.route('/profile').get(ensureAuthenticated, (req, res) => {
-        res.render(__dirname + '/views/pug/profile', { username: req.user.username });
+        res.render(__dirname + '/views/pug/profile', { username: req.user.username || req.user.name });
     });
 
     //logout API
@@ -70,7 +70,7 @@ module.exports = function (app, myDataBase) {
 
     // Github Redirect Back
     app.route('/auth/github/callback')
-        .get(passport.authenticate('local', { failureRedirect: '/loginNoNoNo' }), (req, res) => {
+        .get(passport.authenticate('github', { failureRedirect: '/loginNoNoNo' }), (req, res) => {
             res.redirect('/profile');
         });
 

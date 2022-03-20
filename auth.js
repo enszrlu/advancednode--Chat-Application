@@ -36,7 +36,7 @@ module.exports = function (app, myDataBase) {
     passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: "https://afternoon-lowlands-32561.herokuapp.com/auth/github/callback"
+        callbackURL: process.env.HOME_PAGE + "/auth/github/callback"
     },
         function (accessToken, refreshToken, profile, cb) {
             console.log(profile);
@@ -62,7 +62,7 @@ module.exports = function (app, myDataBase) {
                         login_count: 1
                     }
                 },
-                { upsert: true, new: true },
+                { upsert: true, returnNewDocument: true, new: true },
                 (err, doc) => {
                     return cb(null, doc.value);
                 }
