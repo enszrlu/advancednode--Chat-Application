@@ -42,7 +42,7 @@ module.exports = function (app, myDataBase) {
             console.log(profile);
             console.log('inside github function')
             //Database logic here with callback containing our user object
-            myDataBase.findAndModify(
+            myDataBase.findOneAndUpdate(
                 { id: profile.id },
                 {
                     $setOnInsert: {
@@ -62,7 +62,7 @@ module.exports = function (app, myDataBase) {
                         login_count: 1
                     }
                 },
-                { upsert: true, returnNewDocument: true, new: true },
+                { upsert: true, returnNewDocument: true },
                 (err, doc) => {
                     return cb(null, doc.value);
                 }
