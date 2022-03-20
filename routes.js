@@ -16,7 +16,9 @@ module.exports = function (app, myDataBase) {
 
     // login API
     app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
-        res.redirect('/profile')
+        //res.redirect('/profile')
+        req.session.user_id = req.user.id;
+        res.redirect('/chat');
     });
 
     // Profile page
@@ -71,8 +73,15 @@ module.exports = function (app, myDataBase) {
     // Github Redirect Back
     app.route('/auth/github/callback')
         .get(passport.authenticate('github', { failureRedirect: '/loginNoNoNo' }), (req, res) => {
-            res.redirect('/profile');
+            req.session.user_id = req.user.id;
+            res.redirect('/chat');
         });
+
+
+    // Chat route 
+    app.route('/chat').get(ensureAuthenticated, (req, res) => {
+        res.render(__dirname + '/views/pug/chat', { user: req.user });
+    });
 
     //error handling
     app.use((req, res, next) => {
