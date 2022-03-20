@@ -62,3 +62,7 @@ form button {
 #messages li:nth-child(odd) { 
   background: #eee;
 }
+
+.alert {
+  color: red;
+}

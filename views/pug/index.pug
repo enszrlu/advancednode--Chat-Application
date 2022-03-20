@@ -46,3 +46,6 @@ html
       h2.center Social Login
       .login.center
         a(href='/auth/github').text Login with Github!
+
+    if message
+      div.alert.center #{message}
